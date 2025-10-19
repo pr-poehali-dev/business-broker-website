@@ -1,18 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
+import { useState } from "react";
 
 const Index = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200">
-        <nav className="container mx-auto px-6 py-4 flex items-center justify-between">
+        <nav className="container mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 bg-gradient-to-br from-primary to-slate-800 rounded-lg flex items-center justify-center">
               <span className="text-gold font-bold text-xl">БП</span>
             </div>
-            <span className="text-2xl font-bold text-primary">БизнесПартнер</span>
+            <span className="text-lg md:text-2xl font-bold text-primary">БизнесПартнер</span>
           </div>
           
           <div className="hidden md:flex items-center gap-8">
@@ -24,38 +27,62 @@ const Index = () => {
             <a href="#contact" className="text-slate-700 hover:text-gold transition-colors">Контакты</a>
           </div>
           
-          <Button className="bg-gold hover:bg-gold/90 text-primary font-semibold premium-button">
+          <Button className="hidden md:flex bg-gold hover:bg-gold/90 text-primary font-semibold premium-button">
             Заказать консультацию
           </Button>
+          
+          <button 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden w-10 h-10 flex items-center justify-center text-primary"
+            aria-label="Меню"
+          >
+            <Icon name={mobileMenuOpen ? "X" : "Menu"} size={24} />
+          </button>
         </nav>
+        
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-white border-t border-slate-200 animate-fade-in">
+            <div className="container mx-auto px-4 py-4 space-y-4">
+              <a href="#services" onClick={() => setMobileMenuOpen(false)} className="block py-3 text-slate-700 hover:text-gold transition-colors border-b border-slate-100">Услуги</a>
+              <a href="#sellers" onClick={() => setMobileMenuOpen(false)} className="block py-3 text-slate-700 hover:text-gold transition-colors border-b border-slate-100">Продавцам</a>
+              <a href="#buyers" onClick={() => setMobileMenuOpen(false)} className="block py-3 text-slate-700 hover:text-gold transition-colors border-b border-slate-100">Покупателям</a>
+              <a href="#cases" onClick={() => setMobileMenuOpen(false)} className="block py-3 text-slate-700 hover:text-gold transition-colors border-b border-slate-100">Кейсы</a>
+              <a href="#blog" onClick={() => setMobileMenuOpen(false)} className="block py-3 text-slate-700 hover:text-gold transition-colors border-b border-slate-100">Блог</a>
+              <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="block py-3 text-slate-700 hover:text-gold transition-colors border-b border-slate-100">Контакты</a>
+              <Button className="w-full bg-gold hover:bg-gold/90 text-primary font-semibold premium-button mt-2">
+                Заказать консультацию
+              </Button>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
+      <section className="pt-24 md:pt-32 pb-12 md:pb-20 px-4 md:px-6">
         <div className="container mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8 animate-fade-in">
-              <h1 className="text-5xl md:text-6xl font-bold text-primary leading-tight">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div className="space-y-6 md:space-y-8 animate-fade-in">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary leading-tight">
                 Продаём и покупаем бизнес{" "}
                 <span className="gradient-text">выгодно и эффективно</span>
               </h1>
-              <p className="text-xl text-slate-700 leading-relaxed">
+              <p className="text-base md:text-xl text-slate-700 leading-relaxed">
                 Экспертное сопровождение сделок и внедрение инструментов систематизации менеджмента для максимальной прибыльности.
               </p>
-              <p className="text-lg text-slate-600">
+              <p className="text-sm md:text-lg text-slate-600">
                 Мы – агентство <span className="font-semibold text-primary">БизнесПартнер</span>, ваш надежный партнер в сделках купли-продажи готового бизнеса. Мы не просто помогаем совершить сделку, мы обеспечиваем ее выгодность и успех в долгосрочной перспективе.
               </p>
-              <Button size="lg" className="bg-gold hover:bg-gold/90 text-primary font-semibold text-lg px-8 py-6 premium-button">
+              <Button size="lg" className="w-full md:w-auto bg-gold hover:bg-gold/90 text-primary font-semibold text-base md:text-lg px-6 md:px-8 py-5 md:py-6 premium-button">
                 Получить бесплатную консультацию
               </Button>
             </div>
             
-            <div className="relative animate-scale-in animate-delay-200">
-              <div className="absolute inset-0 bg-gradient-to-br from-gold/20 to-primary/20 rounded-3xl blur-3xl"></div>
+            <div className="relative animate-scale-in animate-delay-200 mt-8 md:mt-0">
+              <div className="absolute inset-0 bg-gradient-to-br from-gold/20 to-primary/20 rounded-2xl md:rounded-3xl blur-3xl"></div>
               <img 
                 src="https://cdn.poehali.dev/projects/fb13814d-7bb2-4aab-9d14-b9c77f63b9bf/files/f60c08e3-7915-461a-b0c1-f17f8a6b21da.jpg" 
                 alt="Бизнес консультация" 
-                className="relative rounded-3xl shadow-2xl w-full h-[500px] object-cover"
+                className="relative rounded-2xl md:rounded-3xl shadow-2xl w-full h-[300px] md:h-[500px] object-cover"
               />
             </div>
           </div>
@@ -63,12 +90,12 @@ const Index = () => {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 px-6 bg-white">
+      <section className="py-12 md:py-20 px-4 md:px-6 bg-white">
         <div className="container mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center text-primary mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center text-primary mb-4">
             5 причин выбрать <span className="gradient-text">БизнесПартнер</span>
           </h2>
-          <p className="text-center text-slate-600 text-lg mb-16 max-w-2xl mx-auto">
+          <p className="text-center text-slate-600 text-sm md:text-lg mb-8 md:mb-16 max-w-2xl mx-auto">
             Мы объединяем профессионализм в сделках с системным подходом к управлению бизнесом
           </p>
           
@@ -123,14 +150,14 @@ const Index = () => {
       </section>
 
       {/* Services for Sellers */}
-      <section id="sellers" className="py-20 px-6 bg-gradient-to-br from-slate-50 to-white">
+      <section id="sellers" className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-br from-slate-50 to-white">
         <div className="container mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <h2 className="text-4xl md:text-5xl font-bold text-primary">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div className="space-y-4 md:space-y-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary">
                 Поможем продать ваш бизнес <span className="gradient-text">выгодно</span>
               </h2>
-              <p className="text-lg text-slate-700 leading-relaxed">
+              <p className="text-sm md:text-lg text-slate-700 leading-relaxed">
                 Мы понимаем, что продажа бизнеса – это ответственный шаг. Наша команда обеспечит вам профессиональную оценку, грамотное продвижение, конфиденциальность и выгодную сделку.
               </p>
               
@@ -142,16 +169,16 @@ const Index = () => {
                   { icon: "FileSignature", text: "Сопровождение сделки" },
                   { icon: "TrendingUp", text: "Внедрение инструментов систематизации менеджмента" }
                 ].map((service, index) => (
-                  <div key={index} className="flex items-center gap-4 p-4 rounded-lg hover:bg-slate-100 transition-colors">
-                    <div className="w-12 h-12 bg-gold/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Icon name={service.icon} className="text-gold" size={24} />
+                  <div key={index} className="flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-lg hover:bg-slate-100 transition-colors">
+                    <div className="w-10 h-10 md:w-12 md:h-12 bg-gold/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Icon name={service.icon} className="text-gold" size={20} />
                     </div>
-                    <span className="text-lg text-slate-700 font-medium">{service.text}</span>
+                    <span className="text-sm md:text-lg text-slate-700 font-medium">{service.text}</span>
                   </div>
                 ))}
               </div>
               
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white font-semibold premium-button">
+              <Button size="lg" className="w-full md:w-auto bg-primary hover:bg-primary/90 text-white font-semibold premium-button">
                 Оставить заявку на продажу
               </Button>
             </div>
@@ -159,7 +186,7 @@ const Index = () => {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-gold/10 to-primary/10 rounded-3xl blur-2xl"></div>
               <Card className="relative border-2 border-slate-200 shadow-2xl">
-                <CardContent className="p-8">
+                <CardContent className="p-6 md:p-8">
                   <div className="space-y-6">
                     <div className="flex items-center gap-4">
                       <div className="w-16 h-16 bg-gradient-to-br from-gold to-gold/70 rounded-2xl flex items-center justify-center">
@@ -196,13 +223,13 @@ const Index = () => {
       </section>
 
       {/* Services for Buyers */}
-      <section id="buyers" className="py-20 px-6 bg-white">
+      <section id="buyers" className="py-12 md:py-20 px-4 md:px-6 bg-white">
         <div className="container mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
             <div className="order-2 md:order-1 relative">
               <Card className="border-2 border-slate-200 shadow-2xl">
-                <CardContent className="p-8 space-y-6">
-                  <h3 className="text-2xl font-bold text-primary">Поможем найти идеальный бизнес</h3>
+                <CardContent className="p-6 md:p-8 space-y-4 md:space-y-6">
+                  <h3 className="text-xl md:text-2xl font-bold text-primary">Поможем найти идеальный бизнес</h3>
                   
                   <div className="space-y-4">
                     {[
@@ -233,11 +260,11 @@ const Index = () => {
               </Card>
             </div>
             
-            <div className="order-1 md:order-2 space-y-6">
-              <h2 className="text-4xl md:text-5xl font-bold text-primary">
+            <div className="order-1 md:order-2 space-y-4 md:space-y-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary">
                 Поможем найти ваш <span className="gradient-text">идеальный бизнес</span>
               </h2>
-              <p className="text-lg text-slate-700 leading-relaxed">
+              <p className="text-sm md:text-lg text-slate-700 leading-relaxed">
                 Мы поможем вам найти и приобрести готовый бизнес, соответствующий вашим требованиям и бюджету. Наша экспертиза в области систематизации управления обеспечит вам понимание текущей ситуации и перспектив развития бизнеса.
               </p>
               
@@ -249,16 +276,16 @@ const Index = () => {
                   { icon: "FileText", text: "Помощь в оформлении документов" },
                   { icon: "Settings", text: "Внедрение инструментов управления" }
                 ].map((service, index) => (
-                  <div key={index} className="flex items-center gap-4 p-4 rounded-lg hover:bg-slate-100 transition-colors">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Icon name={service.icon} className="text-primary" size={24} />
+                  <div key={index} className="flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-lg hover:bg-slate-100 transition-colors">
+                    <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Icon name={service.icon} className="text-primary" size={20} />
                     </div>
-                    <span className="text-lg text-slate-700 font-medium">{service.text}</span>
+                    <span className="text-sm md:text-lg text-slate-700 font-medium">{service.text}</span>
                   </div>
                 ))}
               </div>
               
-              <Button size="lg" className="bg-gold hover:bg-gold/90 text-primary font-semibold premium-button">
+              <Button size="lg" className="w-full md:w-auto bg-gold hover:bg-gold/90 text-primary font-semibold premium-button">
                 Найти свой бизнес
               </Button>
             </div>
@@ -267,16 +294,16 @@ const Index = () => {
       </section>
 
       {/* How We Work */}
-      <section className="py-20 px-6 bg-gradient-to-br from-primary to-slate-900 text-white">
+      <section className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-br from-primary to-slate-900 text-white">
         <div className="container mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4">
             Как мы <span className="gradient-text">проводим сделки</span>
           </h2>
-          <p className="text-center text-slate-300 text-lg mb-16 max-w-2xl mx-auto">
+          <p className="text-center text-slate-300 text-sm md:text-lg mb-8 md:mb-16 max-w-2xl mx-auto">
             Прозрачный процесс от первой консультации до успешного завершения сделки
           </p>
           
-          <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
             {[
               { icon: "MessageSquare", title: "Консультация", description: "Знакомство, обсуждение целей и задач" },
               { icon: "Calculator", title: "Оценка", description: "Профессиональная оценка бизнеса" },
@@ -287,12 +314,12 @@ const Index = () => {
             ].map((step, index) => (
               <Card key={index} className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/15 transition-all duration-300">
                 <CardContent className="p-6 text-center space-y-4">
-                  <div className="w-14 h-14 mx-auto bg-gold rounded-full flex items-center justify-center">
-                    <Icon name={step.icon} className="text-primary" size={24} />
+                  <div className="w-12 h-12 md:w-14 md:h-14 mx-auto bg-gold rounded-full flex items-center justify-center">
+                    <Icon name={step.icon} className="text-primary" size={20} />
                   </div>
-                  <div className="text-4xl font-bold text-gold/50">{index + 1}</div>
-                  <h3 className="text-lg font-bold">{step.title}</h3>
-                  <p className="text-sm text-slate-300">{step.description}</p>
+                  <div className="text-2xl md:text-4xl font-bold text-gold/50">{index + 1}</div>
+                  <h3 className="text-sm md:text-lg font-bold">{step.title}</h3>
+                  <p className="text-xs md:text-sm text-slate-300">{step.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -301,16 +328,16 @@ const Index = () => {
       </section>
 
       {/* Cases */}
-      <section id="cases" className="py-20 px-6 bg-white">
+      <section id="cases" className="py-12 md:py-20 px-4 md:px-6 bg-white">
         <div className="container mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center text-primary mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center text-primary mb-4">
             Наши <span className="gradient-text">успешные кейсы</span>
           </h2>
-          <p className="text-center text-slate-600 text-lg mb-16 max-w-2xl mx-auto">
+          <p className="text-center text-slate-600 text-sm md:text-lg mb-8 md:mb-16 max-w-2xl mx-auto">
             Реальные истории наших клиентов и достигнутые результаты
           </p>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {[
               {
                 type: "Ресторанный бизнес",
@@ -332,7 +359,7 @@ const Index = () => {
               }
             ].map((caseItem, index) => (
               <Card key={index} className="border-2 border-slate-200 hover:border-gold transition-all duration-300 hover:shadow-xl">
-                <CardContent className="p-8 space-y-6">
+                <CardContent className="p-6 md:p-8 space-y-4 md:space-y-6">
                   <div className="space-y-2">
                     <div className="text-sm font-semibold text-gold uppercase tracking-wide">{caseItem.type}</div>
                     <h3 className="text-2xl font-bold text-primary">{caseItem.result}</h3>
@@ -356,8 +383,8 @@ const Index = () => {
             ))}
           </div>
           
-          <div className="text-center mt-12">
-            <Button size="lg" variant="outline" className="border-2 border-gold text-gold hover:bg-gold hover:text-primary font-semibold premium-button">
+          <div className="text-center mt-8 md:mt-12">
+            <Button size="lg" variant="outline" className="w-full md:w-auto border-2 border-gold text-gold hover:bg-gold hover:text-primary font-semibold premium-button">
               Смотреть все кейсы
             </Button>
           </div>
@@ -365,24 +392,24 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 bg-gradient-to-br from-gold to-gold/80">
+      <section className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-br from-gold to-gold/80">
         <div className="container mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-4 md:mb-6">
             Готовы начать работу с нами?
           </h2>
-          <p className="text-xl text-primary/80 mb-10 max-w-2xl mx-auto">
+          <p className="text-base md:text-xl text-primary/80 mb-8 md:mb-10 max-w-2xl mx-auto px-4">
             Получите бесплатную консультацию и узнайте, как мы можем помочь вашему бизнесу
           </p>
-          <Button size="lg" className="bg-primary hover:bg-primary/90 text-white font-semibold text-lg px-10 py-6 premium-button">
+          <Button size="lg" className="w-full md:w-auto bg-primary hover:bg-primary/90 text-white font-semibold text-base md:text-lg px-8 md:px-10 py-5 md:py-6 premium-button">
             Получить консультацию сейчас
           </Button>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-primary text-white py-12 px-6">
+      <footer className="bg-primary text-white py-8 md:py-12 px-4 md:px-6">
         <div className="container mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-6 md:mb-8">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 bg-gradient-to-br from-gold to-gold/70 rounded-lg flex items-center justify-center">
@@ -430,9 +457,9 @@ const Index = () => {
             </div>
           </div>
           
-          <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-300">
+          <div className="pt-6 md:pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs md:text-sm text-slate-300">
             <p>© 2024 БизнесПартнер. Все права защищены.</p>
-            <div className="flex gap-6">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
               <a href="#" className="hover:text-gold transition-colors">Политика конфиденциальности</a>
               <a href="#" className="hover:text-gold transition-colors">Условия использования</a>
             </div>
