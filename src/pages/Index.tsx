@@ -1,10 +1,96 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { useState } from "react";
 
 const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    businessType: '',
+    message: ''
+  });
+  const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const validateForm = () => {
+    const newErrors: {[key: string]: string} = {};
+    
+    if (!formData.name.trim()) {
+      newErrors.name = 'Укажите ваше имя';
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = 'Имя должно быть не менее 2 символов';
+    }
+    
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'Укажите телефон';
+    } else if (!/^\+?[0-9]{10,15}$/.test(formData.phone.replace(/[\s()-]/g, ''))) {
+      newErrors.phone = 'Укажите корректный телефон';
+    }
+    
+    if (!formData.email.trim()) {
+      newErrors.email = 'Укажите email';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Укажите корректный email';
+    }
+    
+    if (!formData.businessType) {
+      newErrors.businessType = 'Выберите тип заявки';
+    }
+    
+    if (!formData.message.trim()) {
+      newErrors.message = 'Опишите ваш запрос';
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = 'Сообщение должно быть не менее 10 символов';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      console.log('Заявка отправлена:', formData);
+      
+      setSubmitSuccess(true);
+      setFormData({
+        name: '',
+        phone: '',
+        email: '',
+        businessType: '',
+        message: ''
+      });
+      
+      setTimeout(() => setSubmitSuccess(false), 5000);
+    } catch (error) {
+      console.error('Ошибка:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
@@ -391,18 +477,167 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-br from-gold to-gold/80">
-        <div className="container mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-4 md:mb-6">
-            Готовы начать работу с нами?
-          </h2>
-          <p className="text-base md:text-xl text-primary/80 mb-8 md:mb-10 max-w-2xl mx-auto px-4">
-            Получите бесплатную консультацию и узнайте, как мы можем помочь вашему бизнесу
-          </p>
-          <Button size="lg" className="w-full md:w-auto bg-primary hover:bg-primary/90 text-white font-semibold text-base md:text-lg px-8 md:px-10 py-5 md:py-6 premium-button">
-            Получить консультацию сейчас
-          </Button>
+      {/* Contact Form Section */}
+      <section id="contact" className="py-12 md:py-20 px-4 md:px-6 bg-gradient-to-br from-slate-50 to-white">
+        <div className="container mx-auto max-w-4xl">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-4">
+              Оставьте <span className="gradient-text">заявку</span>
+            </h2>
+            <p className="text-sm md:text-lg text-slate-600 max-w-2xl mx-auto">
+              Заполните форму, и наш эксперт свяжется с вами в течение 30 минут
+            </p>
+          </div>
+
+          <Card className="border-2 border-slate-200 shadow-2xl">
+            <CardContent className="p-6 md:p-10">
+              {submitSuccess ? (
+                <div className="text-center py-12 space-y-4 animate-fade-in">
+                  <div className="w-20 h-20 mx-auto bg-green-100 rounded-full flex items-center justify-center">
+                    <Icon name="CheckCircle" className="text-green-600" size={40} />
+                  </div>
+                  <h3 className="text-2xl font-bold text-primary">Заявка отправлена!</h3>
+                  <p className="text-slate-600">Мы свяжемся с вами в ближайшее время</p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="name" className="text-slate-700 font-medium">
+                        Ваше имя <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        id="name"
+                        type="text"
+                        placeholder="Иван Иванов"
+                        value={formData.name}
+                        onChange={(e) => handleChange('name', e.target.value)}
+                        className={`${errors.name ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
+                      />
+                      {errors.name && (
+                        <p className="text-sm text-red-500 flex items-center gap-1">
+                          <Icon name="AlertCircle" size={14} />
+                          {errors.name}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="phone" className="text-slate-700 font-medium">
+                        Телефон <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        id="phone"
+                        type="tel"
+                        placeholder="+7 (999) 123-45-67"
+                        value={formData.phone}
+                        onChange={(e) => handleChange('phone', e.target.value)}
+                        className={`${errors.phone ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
+                      />
+                      {errors.phone && (
+                        <p className="text-sm text-red-500 flex items-center gap-1">
+                          <Icon name="AlertCircle" size={14} />
+                          {errors.phone}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-slate-700 font-medium">
+                      Email <span className="text-red-500">*</span>
+                    </Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="ivan@example.com"
+                      value={formData.email}
+                      onChange={(e) => handleChange('email', e.target.value)}
+                      className={`${errors.email ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
+                    />
+                    {errors.email && (
+                      <p className="text-sm text-red-500 flex items-center gap-1">
+                        <Icon name="AlertCircle" size={14} />
+                        {errors.email}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="businessType" className="text-slate-700 font-medium">
+                      Тип заявки <span className="text-red-500">*</span>
+                    </Label>
+                    <select
+                      id="businessType"
+                      value={formData.businessType}
+                      onChange={(e) => handleChange('businessType', e.target.value)}
+                      className={`w-full px-3 py-2 border rounded-md bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-gold ${
+                        errors.businessType ? 'border-red-500 focus:ring-red-500' : 'border-slate-300'
+                      }`}
+                    >
+                      <option value="">Выберите тип заявки</option>
+                      <option value="sell">Хочу продать бизнес</option>
+                      <option value="buy">Хочу купить бизнес</option>
+                      <option value="valuation">Оценка бизнеса</option>
+                      <option value="consultation">Консультация</option>
+                      <option value="management">Систематизация управления</option>
+                    </select>
+                    {errors.businessType && (
+                      <p className="text-sm text-red-500 flex items-center gap-1">
+                        <Icon name="AlertCircle" size={14} />
+                        {errors.businessType}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="message" className="text-slate-700 font-medium">
+                      Сообщение <span className="text-red-500">*</span>
+                    </Label>
+                    <Textarea
+                      id="message"
+                      placeholder="Расскажите подробнее о вашем запросе..."
+                      value={formData.message}
+                      onChange={(e) => handleChange('message', e.target.value)}
+                      rows={5}
+                      className={`resize-none ${errors.message ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
+                    />
+                    {errors.message && (
+                      <p className="text-sm text-red-500 flex items-center gap-1">
+                        <Icon name="AlertCircle" size={14} />
+                        {errors.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="pt-4">
+                    <Button 
+                      type="submit" 
+                      size="lg" 
+                      disabled={isSubmitting}
+                      className="w-full bg-gold hover:bg-gold/90 text-primary font-semibold text-base md:text-lg premium-button"
+                    >
+                      {isSubmitting ? (
+                        <span className="flex items-center gap-2">
+                          <Icon name="Loader2" className="animate-spin" size={20} />
+                          Отправка...
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-2">
+                          <Icon name="Send" size={20} />
+                          Отправить заявку
+                        </span>
+                      )}
+                    </Button>
+                  </div>
+
+                  <p className="text-xs text-slate-500 text-center">
+                    Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
+                  </p>
+                </form>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </section>
 
